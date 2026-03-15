@@ -1,37 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
   ScrollView,
   useWindowDimensions,
-  StatusBar,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {StatusBar} from 'expo-status-bar';
 
 const App = () => {
   const { width, height } = useWindowDimensions();
+  const insets = useSafeAreaInsets();
 
   const isLandscape = width > height;
 
-  const handlePress = (value: string) => {
-    console.log("Button pressed :", value);
-  };
+  const statusBarHeight = insets.top;
 
+  const handlePress = (value: string) => {
+    console.log('Button Pressed:', value);
+  };
 
   const buttons = [
     ['AC', 'C', '/'],
     ['7', '8', '9', '*'],
     ['4', '5', '6', '-'],
     ['1', '2', '3', '+'],
-    ['0', '.', '='],
+    ['0', '00', '.', '='],
   ];
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" />
-      <View style={styles.header}>
+    <View style={[styles.container]} >
+      <StatusBar style='dark' backgroundColor="#6200ee" />
+      <View style={[styles.header, { paddingTop: statusBarHeight, paddingBottom: 16 }]}>
         <Text style={styles.headerTitle}>Calculator</Text>
       </View>
 
@@ -47,16 +49,17 @@ const App = () => {
       <View style={[styles.buttonPad, isLandscape && styles.buttonPadLandscape]}>
         {buttons.map((row, rowIndex) => (
           <View key={rowIndex} style={styles.buttonRow}>
-            {row.map((btn) => { let buttonStyle = styles.button;
+            {row.map((btn) => { 
+              let buttonStyle = styles.button;
               if (btn === 'AC' || btn === 'C') 
                 buttonStyle = styles.specialButton;
-              else if 
-                (['/', '*', '-', '+', '='].includes(btn)) buttonStyle = styles.operatorButton;
+              else if  (['/', '*', '-', '+', '='].includes(btn)) 
+                buttonStyle = styles.operatorButton;
 
               return (
                 <TouchableOpacity
                   key={btn}
-                  style={[buttonStyle, { flex: btn === '0' ? 2 : 1 }]}
+                  style={[buttonStyle, { flex: 1 }]}
                   onPress={() => handlePress(btn)}>
                   <Text style={styles.buttonText}>{btn}</Text>
                 </TouchableOpacity>
@@ -65,7 +68,7 @@ const App = () => {
           </View>
         ))}
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -76,7 +79,7 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: '#6200ee',
-    padding: 16,
+    // padding: 16,
     alignItems: 'center',
   },
   headerTitle: {
@@ -91,7 +94,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 12,
     justifyContent: 'space-between',
-    elevation: 4,
+    // elevation: 4,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
@@ -144,7 +147,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 2,
+    // elevation: 2,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
@@ -157,7 +160,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 2,
+    // elevation: 2,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
@@ -170,14 +173,14 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 2,
+    // elevation: 2,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 2,
   },
   buttonText: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: '500',
     color: '#333',
   },

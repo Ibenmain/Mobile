@@ -6,10 +6,9 @@ import {
   TouchableOpacity,
   ScrollView,
   useWindowDimensions,
-  // StatusBar,
 } from 'react-native';
 import { evaluate } from 'mathjs';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {StatusBar} from 'expo-status-bar';
 
 const App = () => {
@@ -25,6 +24,7 @@ const App = () => {
   const statusBarHeight = insets.top;
 
   const handlePress = (value: string) => {
+    console.log('Button Pressed:', value);
   switch (value) {
     case 'AC':
       setExpression('');
@@ -33,22 +33,19 @@ const App = () => {
     case 'C':
       setExpression(expression.slice(0, -1));
       break;
-    case '=':
+    case '=':``
       evaluateExpression();
       break;
     default: {
       const lastChar = expression.slice(-1);
-      console.log('lastChar:', lastChar, 'value:', value);
 
       if (isOperator(value)) {
-        console.log('isOperator(value):', isOperator(value));
         if (!expression) return;
         if (isOperator(lastChar) && lastChar === value) return;
       }
 
       if (value === '.') {
         const lastNumber = expression.split(/[\+\-\*\/]/).pop();
-        console.log('lastNumber:', lastNumber);
         if (lastNumber && lastNumber.includes('.')) return;
       }
 
@@ -66,7 +63,7 @@ const App = () => {
       const evalResult = evaluate(expression);
       setResult(evalResult.toString());
     } catch (error) {
-      setResult('Expression Error.');
+      setResult('Expression error');
     }
   };
 
@@ -75,7 +72,7 @@ const App = () => {
     ['7', '8', '9', '*'],
     ['4', '5', '6', '-'],
     ['1', '2', '3', '+'],
-    ['0', '.', '='],
+    ['0', '00', '.', '='],
   ];
 
   return (
@@ -107,7 +104,7 @@ const App = () => {
               return (
                 <TouchableOpacity
                   key={btn}
-                  style={[buttonStyle, { flex: btn === '0' ? 2 : 1 }]}
+                  style={[buttonStyle, { flex: 1 }]}
                   onPress={() => handlePress(btn)}>
                   <Text style={styles.buttonText}>{btn}</Text>
                 </TouchableOpacity>
